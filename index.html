@@ -20,8 +20,8 @@
             {
                 var currentPosition = $("#character").offset();
                 $("#character").offset({
-                    top: currentPosition.top + movement.x,
-                    left: currentPosition.left + movement.y
+                    top: currentPosition.top + movement.y,
+                    left: currentPosition.left + movement.x
                 });
             }
             setInterval(worldTick, 100);
@@ -29,16 +29,16 @@
                 switch(e.keyCode)
                 {
                     case 37:
-                        movement.x = -1;
+                        movement.x = -3;
                         break;
                     case 38:
-                        movement.y = -1;
+                        movement.y = -3;
                         break;
                     case 39:
-                        movement.x = 1;
+                        movement.x = 3;
                         break;
                     case 40:
-                        movement.y = 1;
+                        movement.y = 3;
                         break;
                 }
             }).on("keyup", function(){
@@ -50,7 +50,7 @@
             <img src="images/user.png" alt="" />
         </div>
         <h1>Hello,thank you for getting on hudsonsiewert.com</h1><br>
-        <span class="line1">e </span> <br /><
+        <span class="line1"> </span> <br />
         <br />
         <a href="#" onclick="this.href='?a='+(new Date())">Refresh</a>
     </body>
