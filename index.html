@@ -28,17 +28,17 @@
             $(document).on("keydown", function(e){
                 switch(e.keyCode)
                 {
-                    case 37:
-                        movement.x = -3;
+                    case 37: //Left Arrow
+                        movement.x = -100;
                         break;
-                    case 38:
-                        movement.y = -3;
+                    case 38: //Down Arrow
+                        movement.y = -100;
                         break;
-                    case 39:
-                        movement.x = 3;
+                    case 39: //Right Arrow
+                        movement.x = 100;
                         break;
-                    case 40:
-                        movement.y = 3;
+                    case 40: //Up Arrow
+                        movement.y = 100;
                         break;
                 }
             }).on("keyup", function(){
