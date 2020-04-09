@@ -4,13 +4,51 @@
             .line1 {
                 
             }
+            #character {
+                position:absolute;
+                top: 100px;
+                left: 100px;
+            }
         </style>
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>"
         <script type="text/javascript">
-            $(document).on("click", function(){
-                alert("hi")
-            })
+            var movement = {
+                x: 0,
+                y: 0,
+            };
+            function worldTick()
+            {
+                var currentPosition = $("#character").offset();
+                $("#character").offset({
+                    top: currentPosition.top + movement.x,
+                    left: currentPosition.left + movement.y
+                });
+            }
+            setInterval(worldTick, 100);
+            $(document).on("keydown", function(e){
+                switch(e.keyCode)
+                {
+                    case 37:
+                        movement.x = -1;
+                        break;
+                    case 38:
+                        movement.y = -1;
+                        break;
+                    case 39:
+                        movement.x = 1;
+                        break;
+                    case 40:
+                        movement.y = 1;
+                        break;
+                }
+            }).on("keyup", function(){
+                movement.x = 0;
+                movement.y = 0;
+            });
         </script>
+        <div id="character">
+            <img src="images/user.png" alt="" />
+        </div>
         <h1>Hello,thank you for getting on hudsonsiewert.com</h1><br>
         <span class="line1">e </span> <br /><
         <br />
