@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <title>The Math Multiply Game!</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+    </head>
+    <body>
+        <h1>The Math Multiply Game</h1>
+        <p class="explanation">
+            Test your math skills by playing this game!
+        </p>
+        <div id="main-page" class="page">
+            <h2>High Scores</h2>
+            <ul id="high-scores"></ul>
+            <input type="button" value="New Game">
+        </div>
+        <div id="game-page" class="page">
+
+        </div>
+        <script>
+            function showPage(pageId)
+            {
+                $(".page").hide();
+                $("#"+pageId).show();
+            }
+            function showMain()
+            {
+                var scoreString = Cookies.get("high-scores");
+                if(scoreString)
+                {
+                    $.each(JSON.parse(scoreString), function(i, e){
+                        $("#high-scores").append("<li>"+e.score + " on " + e.date+"</li>");
+                    })
+                }
+                showPage("main-page");
+            }
+            showMain();
+        </script>
+    </body>
+</html>
