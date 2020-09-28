@@ -39,6 +39,7 @@
             }
             function showMain()
             {
+                $("#high-scores").html("");
                 $.each(getHighScores(), function(i, e){
                     $("#high-scores").append("<li>"+e.score + " on " + e.date + "</li>");
                 });
@@ -52,9 +53,9 @@
                 var scores = getHighScores();
                 scores.push({
                     "score": myScore,
-                    "date": (new Date()).toDateString(),
+                    "date": (new Date()).toDateString() + " " + (new Date()).toLocaleTimeString('en-US'),
                 });
-                var top = scores.sort(a => -1 * a.score).slice(0, 9);
+                var top = scores.sort(a=>-1*a.score).slice(0, 9);
                 localStorage.setItem("high-scores", JSON.stringify(top));
             }
             function clearScore(){
@@ -128,7 +129,7 @@
                 }
             });
             $("#new-game").on("click", function(){
-                resetGame(10);
+                resetGame(15);
                 showPage("game-page");
                 showNextQuestion();
             });
