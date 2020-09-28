@@ -2,20 +2,34 @@
     <head>
         <title>The Math Multiply Game!</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+        <link rel="stylesheet" href="multiply.css" type="text/css">
     </head>
     <body>
         <h1>The Math Multiply Game</h1>
         <p class="explanation">
-            Test your math skills by playing this game!
+            Test your math skills by playing this game! Type an answer to the math problem and press the enter key.
+            The faster you answer, the more points you score.
         </p>
         <div id="main-page" class="page">
             <h2>High Scores</h2>
             <ul id="high-scores"></ul>
-            <input type="button" value="New Game">
+            <input id="new-game" type="button" value="New Game">
+            <input id="reset-score" type="button" value="Clear Score">
         </div>
         <div id="game-page" class="page">
+            <div id="score">
+               Current score:  <span></span>
+            </div>
+            <div id="available">
+                Available points: <span></span>
+            </div>
+            <div id="question">
+                <div id="num1"></div>
+                <div id="symbol">x</div>
+                <div id="num2"></div>
 
+                <input id="ans">
+            </div>
         </div>
         <script>
             function showPage(pageId)
@@ -25,15 +39,107 @@
             }
             function showMain()
             {
-                var scoreString = Cookies.get("high-scores");
-                if(scoreString)
-                {
-                    $.each(JSON.parse(scoreString), function(i, e){
-                        $("#high-scores").append("<li>"+e.score + " on " + e.date+"</li>");
-                    })
-                }
+                $.each(getHighScores(), function(i, e){
+                    $("#high-scores").append("<li>"+e.score + " on " + e.date + "</li>");
+                });
                 showPage("main-page");
             }
+            function getHighScores(){
+                var scoreString = localStorage.getItem("high-scores") || "[]";
+                return JSON.parse(scoreString);
+            }
+            function saveScore(myScore){
+                var scores = getHighScores();
+                scores.push({
+                    "score": myScore,
+                    "date": (new Date()).toDateString(),
+                });
+                var top = scores.sort(a => -1 * a.score).slice(0, 9);
+                localStorage.setItem("high-scores", JSON.stringify(top));
+            }
+            function clearScore(){
+                localStorage.setItem("high-scores","[]");
+            }
+
+
+            var score = 0;
+            var available = 0;
+            var questions = [];
+            var questionIdx = 0;
+            var currentQ = {};
+            var timer = {};
+            function resetGame(gameQuestionCount){
+                score = 0;
+                for(var i = 0; i < 100; i++){
+                    questions[i] = [1+Math.floor(i/10), 1+(i % 10), i];
+                }
+                for (var i = questions.length - 1; i > 0; i--) {
+                    var j = Math.floor(Math.random() * (i + 1));
+                    var x = questions[i];
+                    questions[i] = questions[j];
+                    questions[j] = x;
+                }
+                questions = questions.slice(0, gameQuestionCount - 1);
+                questionIdx = -1;
+            }
+            function tick(){
+                if(available > 1)
+                {
+                    available--;
+                }
+                $("#available span").text(available);
+            }
+            function showNextQuestion(){
+                questionIdx++;
+                $("#score span").text(score);
+                available = 11;
+                timer = setInterval(tick, 1000);
+                tick();
+                if(questionIdx >= questions.length)
+                {
+                    saveScore(score);
+                    showMain();
+                    return;
+                }
+                currentQ = questions[questionIdx];
+                
+                $("#num1").text(currentQ[0]);
+                $("#num2").text(currentQ[1]);
+                $("#ans").val("").focus();
+            }
+
+            function handleGuess(){
+                if(parseInt($("#ans").val())==currentQ[0]*currentQ[1])
+                {
+                    clearInterval(timer);
+                    score += available;
+                    showNextQuestion();
+                }
+                else
+                {
+                    $("#ans").val("").focus();
+                }
+            }
+            $("#ans").on("keypress", function(e){
+                if(e.keyCode == 13)
+                {
+                    handleGuess();
+                    e.preventDefault();
+                }
+            });
+            $("#new-game").on("click", function(){
+                resetGame(10);
+                showPage("game-page");
+                showNextQuestion();
+            });
+            $("#reset-score").on("click", function(){
+                if(confirm("Are you sure you wish to remove all scores?")
+                    && confirm("Really?"))
+                    {
+                        clearScore();
+                        showMain();
+                    }
+            })
             showMain();
         </script>
     </body>

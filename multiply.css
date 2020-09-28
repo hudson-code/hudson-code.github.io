@@ -1,0 +1,33 @@
+#question {
+    font-size: 30px;
+    position: relative;
+}
+#num1 {
+    top: 0;
+    left: 1.5em;
+    position: absolute;
+}
+#num2 {
+    top: 1.5em;
+    left: 1.5em;
+    position: absolute;
+}
+#symbol {
+    top: 1.5em;
+    left: 0;
+    position: absolute;
+}
+
+#ans {
+    font-size: 1em;
+    top: 2.75em;
+    padding-top: 0.25em;
+    left: 0;
+    position: absolute;
+    border-width: 0;
+    border-top: 3px solid black;
+    outline: none;
+    text-align: right;
+    padding-right: 1em;
+    width: 3em;
+}
